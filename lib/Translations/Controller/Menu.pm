@@ -1,9 +1,8 @@
 package Translations::Controller::Menu;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 
-sub showmenu {
-	my $self = shift;
+sub showmenu ($self) {
 
 	$self->render_later;
 	$self->menu->list()->then(sub {

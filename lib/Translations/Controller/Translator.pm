@@ -2,12 +2,19 @@ package Translations::Controller::Translator;
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Try::Tiny;
-use Mojo::JSON qw{from_json};
+use Mojo::JSON qw{from_json to_json};
 use Data::Dumper;
+use Daje::Utils::Sentinelsender;
 
 has 'pg';
 
-sub details_headers ($self, $module, $field_list, $data, $lan) {
+sub details_headers ($self) {
+
+    my $json_hash = from_json ($self->req->body);
+    my $module = $json_hash->{module}
+    my $field_list = $json_hash->{fields_list};
+    my $data = $json_hash->{data};
+    my $lan = $json_hash->{lan};
 
     my $translation_list = $self->get_translation_list($module, $field_list, $lan);
     my $length = scalar @{$translation_list};
@@ -23,7 +30,10 @@ sub details_headers ($self, $module, $field_list, $data, $lan) {
                 $details->{$field->{setting_value}}->{properties} = try {
                     from_json $field->{setting_properties};
                 }catch{
-                    $self->capture_message('','Daje-Utils-Translations', (ref $self), (caller(0))[3], $_);
+                    Daje::Utils::Sentinelsender->new()->capture_message(
+                        'Translations','Translations::Controller::Translator::details_headers',
+                            (ref $self), (caller(0))[3], $_
+                    );
                     say $_;
                     return '';
                 };
@@ -40,10 +50,17 @@ sub details_headers ($self, $module, $field_list, $data, $lan) {
             }
         }
     }
-    return $details;
+
+    my $result = to_json($details);
+    $self->render(json => {result => $result});
 }
 
-sub grid_header ($self, $module, $field_list, $lan) {
+sub grid_header ($self) {
+
+    my $json_hash = from_json ($self->req->body);
+    my $module = $json_hash->{module}
+    my $field_list = $json_hash->{fields_list};
+    my $lan = $json_hash->{lan};
 
     my $translation_list = $self->get_translation_list($module, $field_list, $lan);
     my $length = scalar @{$translation_list};
@@ -56,10 +73,13 @@ sub grid_header ($self, $module, $field_list, $lan) {
         $header->{field} = $field->{setting_value};
         $header->{properties} = '';
         if($field->{setting_properties}){
-            $header->{properties} = try{
+            $header->{properties} = try {
                 from_json $field->{setting_properties};
             }catch{
-                $self->capture_message('','Daje-Utils-Translations', (ref $self), (caller(0))[3], $_);
+                Daje::Utils::Sentinelsender->new()->capture_message(
+                    'Translations','Translations::Controller::Translator::grid_header',
+                        (ref $self), (caller(0))[3], $_
+                );
                 say $_;
                 return '';
             };
@@ -77,7 +97,9 @@ sub grid_header ($self, $module, $field_list, $lan) {
         }
         push @header_list, $header;
     }
-    return \@header_list;
+
+    my $result = to_json(\@header_list);
+    $self->render(json => {result => $result});
 }
 
 sub get_translation_list ($self, $module, $field_list, $lan) {
@@ -87,7 +109,10 @@ sub get_translation_list ($self, $module, $field_list, $lan) {
     my $translation_list = try{
         $self->pg->db->query($stmt)->hashes->to_array
     }catch{
-        $self->capture_message('','Daje-Utils-Translations', (ref $self), (caller(0))[3], $_);
+        Daje::Utils::Sentinelsender->new()->capture_message(
+            'Translations','Translations::Controller::Translator::get_translation_list',
+                (ref $self), (caller(0))[3], $_
+        );
         say $_;
     };
 

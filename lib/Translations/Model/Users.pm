@@ -1,18 +1,16 @@
 package Translations::Model::Users;
-use Mojo::Base 'Daje::Utils::Sentinelsender';
+use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures;
 
 use Translations::Model::User;
 
 has 'pg';
 
-sub login {
-	my ($self, $user, $password) = @_;
+sub login ($self, $user, $password) {
 
 	return Translations::Model::User->new(pg => $self->pg)->login_light($user, $password);
 }
 
-sub save {
-	my ($self, $user) = @_;
+sub save ($self, $user) {
 
 	return $self->pg->db->query(qq{
 		INSERT INTO users(
@@ -30,9 +28,8 @@ sub save {
 	);
 }
 
-sub list_p {
-	my $self = shift;
-	
+sub list_p ($self) {
+
 	return $self->pg->db->select_p('users');
 }
 

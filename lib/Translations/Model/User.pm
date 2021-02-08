@@ -1,5 +1,5 @@
 package Translations::Model::User;
-use Mojo::Base 'Daje::Utils::Sentinelsender';
+use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures;
 
 use Try::Tiny;
 use Data::UUID;
@@ -8,8 +8,7 @@ use Digest::SHA qw{sha512_base64};
 
 has 'pg';
 
-sub save_user{
-    my($self, $user) = @_;
+sub save_user ($self, $user) {
 
     my $stmt;
     my $result;
@@ -56,8 +55,7 @@ sub save_user{
     return $result;
 }
 
-sub save_user_p{
-    my($self, $user) = @_;
+sub save_user_p ($self, $user) {
 
     my $stmt;
     my $result;
@@ -81,10 +79,12 @@ sub save_user_p{
             $user->{active}
         ));
     }else{
-        $stmt = qq{INSERT INTO users (username, userid, active, menu_group) VALUES (?,?,?,?)
-                    ON CONFLICT (userid) DO UPDATE SET username = ?,
-                        moddatetime = now(), active = ?
-                    RETURNING users_pkey};
+        $stmt = qq{
+            INSERT INTO users (username, userid, active, menu_group) VALUES (?,?,?,?)
+                ON CONFLICT (userid) DO UPDATE SET username = ?,
+                    moddatetime = now(), active = ?
+                RETURNING users_pkey
+        };
 
         $result = $self->pg->db->query_p($stmt,(
             $user->{username},
@@ -100,8 +100,7 @@ sub save_user_p{
     return $result;
 }
 
-sub login{
-    my($self, $user, $password) = @_;
+sub login ($self, $user, $password) {
 
     my $user_obj;
     $password = '' unless $password;
@@ -133,208 +132,12 @@ sub login{
 #
 # Return number of hits, more than 0 and user is matched
 #
-sub login_light{ #scalar (userid, password)
-    my($self, $user, $password) = @_;
+sub login_light ($self, $user, $password) { #scalar (userid, password)
 
     $password = '' unless $password;
     my $passwd = sha512_base64($password);
     my $result = $self->pg->db->query("select * from users where userid = ? and passwd= ?",($user,$passwd));
     return $result->rows() > 0;
 }
-
-sub authenticate{
-    my ($self, $token) = @_;
-
-    return $self->pg->db->query(qq{SELECT count(*) loggedin FROM users
-                                    JOIN users_token  ON users_fkey = users_pkey
-                                            WHERE token = ? },$token
-    )->hash->{loggedin};
-}
-
-sub load_user{
-    my($self, $users_pkey) = @_;
-
-    my $stmt = qq{SELECT users_pkey, '' as password, companies_pkey, a.menu_group as menu_groupid ,
-                            userid, username, b.menu_group, d.name, f.address1, f.address2,
-                            f.address3, f.city, f.zipcode, f.country, '' as confirmpassword, a.active,
-                            c.companies_fkey as companies_fkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER  JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                                            WHERE users_pkey = ? };
-
-    return $self->pg->db->query($stmt,($users_pkey));
-
-}
-
-sub load_user_p{
-    my($self, $users_pkey) = @_;
-
-    my $stmt = qq{SELECT users_pkey, '' as password, companies_pkey, a.menu_group as menu_groupid ,
-                            userid, username, b.menu_group, d.name, f.address1, f.address2,
-                            f.address3, f.city, f.zipcode, f.country, '' as confirmpassword, a.active,
-                            c.companies_fkey as companies_fkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER  JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                                            WHERE users_pkey = ? };
-
-    return $self->pg->db->query_p($stmt,($users_pkey));
-
-}
-sub load_user_from_userid{
-    my($self, $userid) = @_;
-
-    my $stmt = qq{SELECT users_pkey, '' as password, companies_pkey, a.menu_group as menu_groupid ,
-                            userid, username, b.menu_group, d.name, f.address1, f.address2,
-                            f.address3, f.city, f.zipcode, f.country, '' as confirmpassword, a.active,
-                            c.companies_fkey as companies_fkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER  JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                                            WHERE userid = ? };
-
-    return $self->pg->db->query($stmt,($userid))->hash;
-}
-
-sub load_token_user_p{
-    my($self, $token) = @_;
-
-    my $stmt = qq{SELECT users_pkey, companies_pkey, a.menu_group as menu_groupid ,
-                            userid, username, b.menu_group, d.name, f.address1, f.address2,
-                            f.address3, f.city, f.zipcode, f.country, a.active, c.companies_fkey as companies_fkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                            JOIN users_token as g ON g.users_fkey = a.users_pkey
-                                            WHERE token = ? };
-
-    return $self->pg->db->query_p($stmt,($token));
-
-}
-
-sub load_token_user{
-    my($self, $token) = @_;
-
-    my $stmt = qq{SELECT users_pkey, companies_pkey, a.menu_group as menu_groupid ,
-                            userid, username, b.menu_group, d.name, f.address1, f.address2,
-                            f.address3, f.city, f.zipcode, f.country, a.active, c.companies_fkey as companies_fkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                            JOIN users_token as g ON g.users_fkey = a.users_pkey
-                                            WHERE token = ? };
-
-    return $self->pg->db->query($stmt,($token));
-
-}
-
-
-sub load_token_user_company_pkey{
-    my($self, $token) = @_;
-
-    my $stmt = qq{SELECT users_pkey, companies_pkey
-                            FROM users as a
-                            JOIN menu_groups as b ON a.menu_group = menu_groups_pkey
-                            JOIN users_companies as c ON a.users_pkey = c.users_fkey
-                            JOIN companies as d  ON d.companies_pkey = c.companies_fkey
-                            LEFT OUTER JOIN addresses_user as e ON e.users_fkey = a.users_pkey
-                            LEFT OUTER JOIN addresses as f ON f.addresses_pkey = e.addresses_fkey
-                            JOIN users_token as g ON g.users_fkey = a.users_pkey
-                                            WHERE token = ? };
-
-    return $self->pg->db->query($stmt,($token));
-
-}
-
-sub get_company_fkey_from_token_p{
-    my ($self, $token) = @_;
-
-    my $stmt = qq{
-                    SELECT b.companies_fkey
-                        FROM users_token as a
-                    JOIN users_companies as b
-                        ON a.users_fkey = b.users_fkey
-                    AND token = ?
-                };
-
-    return $self->pg->db->query_p($stmt,($token));
-}
-
-sub get_company_fkey_from_token{
-    my ($self, $token) = @_;
-
-    my $stmt = qq{
-                    SELECT b.companies_fkey
-                        FROM users_token as a
-                    JOIN users_companies as b
-                        ON a.users_fkey = b.users_fkey
-                    AND token = ?
-                };
-
-    return $self->pg->db->query($stmt,($token))->hash;
-}
-
-sub isSupport{
-    my ($self, $token) = @_;
-
-    my $stmt = qq{
-                    SELECT b.support
-                        FROM users_token as a
-                    JOIN users as b
-                        ON a.users_fkey = b.users_pkey
-                    AND token = ?
-                };
-
-    my $result = $self->pg->db->query($stmt,($token));
-    my $support = 0;
-
-    $support = $result->hash->{support} if($result->rows > 0);
-    $result->finish();
-    say "support '$support'";
-    return $support;
-
-}
-
-sub set_setdefault_data{
-    my ($self, $data) = @_;
-
-    my $fields;
-    ($data, $fields) = Daje::Utils::Postgres::Columns->new(
-        pg => $self->pg
-    )->set_setdefault_data($data, 'users');
-
-    return $data, $fields;
-}
-
-sub get_table_column_names {
-    my $self = shift;
-
-    my $fields;
-    $fields = Daje::Utils::Postgres::Columns->new(
-        pg => $self->pg
-    )->get_table_column_names('users');
-
-    return $fields;
-}
-1;
-
-
-
 
 1;

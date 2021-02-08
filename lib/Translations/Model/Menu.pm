@@ -1,10 +1,9 @@
 package Translations::Model::Menu;
-use Mojo::Base 'Daje::Utils::Sentinelsender';
+use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures;
 
 has 'pg';
 
-sub list {
-	my($self, $conditions) = @_;
+sub list ($self) {
 
 	return $self->pg->db->select_p('menu',
 		[

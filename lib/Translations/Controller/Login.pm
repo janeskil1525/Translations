@@ -1,17 +1,15 @@
 package Translations::Controller::Login;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 use Data::Dumper;
 use Data::GUID;
 
-sub showlogin{
-	my $self = shift;
+sub showlogin ($self) {
 
 	$self->render(template => 'logon/logon');
 }
 
-sub login{
-	my $self = shift;
+sub login ($self) {
 
 	if($self->users->login($self->param('email'), $self->param('pass'))) {
 		$self->session->{auth} = 1;

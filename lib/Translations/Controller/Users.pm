@@ -1,9 +1,8 @@
 package Translations::Controller::Users;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 
-sub list{
-	my $self = shift;
+sub list ($self) {
 
 	$self->render_later;
 	$self->users->list_p()->then(sub{
