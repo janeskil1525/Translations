@@ -6,13 +6,14 @@ use Mojo::JSON qw{from_json to_json};
 use Data::Dumper;
 use Daje::Utils::Sentinelsender;
 
-has 'pg';
 
 sub details_headers ($self) {
 
-    my $json_hash = from_json ($self->req->body);
-    my $module = $json_hash->{module}
-    my $field_list = $json_hash->{fields_list};
+    my $body = $self->req->body;
+    my $json_hash = from_json ($body);
+    say Dumper($json_hash);
+    my $module = $json_hash->{module};
+    my $field_list = $json_hash->{field_list};
     my $data = $json_hash->{data};
     my $lan = $json_hash->{lan};
 
@@ -51,15 +52,15 @@ sub details_headers ($self) {
         }
     }
 
-    my $result = to_json($details);
-    $self->render(json => {result => $result});
+    #my $result = to_json($details);
+    $self->render(json => {result => $details});
 }
 
 sub grid_header ($self) {
 
     my $json_hash = from_json ($self->req->body);
-    my $module = $json_hash->{module}
-    my $field_list = $json_hash->{fields_list};
+    my $module = $json_hash->{module};
+    my $field_list = $json_hash->{field_list};
     my $lan = $json_hash->{lan};
 
     my $translation_list = $self->get_translation_list($module, $field_list, $lan);
@@ -98,16 +99,16 @@ sub grid_header ($self) {
         push @header_list, $header;
     }
 
-    my $result = to_json(\@header_list);
-    $self->render(json => {result => $result});
+    #my $result = to_json(\@header_list);
+    $self->render(json => {result => \@header_list});
 }
 
 sub get_translation_list ($self, $module, $field_list, $lan) {
 
     my $stmt = $self->get_query($module, $field_list, $lan);
-
+say $stmt;
     my $translation_list = try{
-        $self->pg->db->query($stmt)->hashes->to_array
+        $self->app->pg->db->query($stmt)->hashes->to_array
     }catch{
         Daje::Utils::Sentinelsender->new()->capture_message(
             'Translations','Translations::Controller::Translator::get_translation_list',
@@ -122,6 +123,8 @@ sub get_translation_list ($self, $module, $field_list, $lan) {
 sub get_query ($self, $module, $field_list, $lan) {
 
     my $incondition ;
+
+    say "get_query " . Dumper($field_list);
     foreach (@{$field_list}){
         $incondition .= " '$_->{setting_value}',";
     }

@@ -2,7 +2,8 @@ package Translations::Helper::Client;
 use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures;
 
 use Mojo::UserAgent;
-use Mojo::JSON qw {to_json};
+use Mojo::JSON qw {to_json decode_json};
+use Data::Dumper;
 
 has 'pg';
 has 'endpoint_address';
@@ -17,23 +18,25 @@ sub details_headers ($self, $module, $field_list, $data, $lan) {
     $post_data->{data} = $data;
     $post_data->{lan} = $lan;
 
-    my $json = to_json($post_data);
     my $res = $ua->post(
         $self->endpoint_address() . '/details_headers' =>
             {'X-Token-Check' => $self->key()} =>
-        json => $json
+        json => $post_data
     )->result;
 
+    my $body;
     if($res->is_error){
         $self->capture_message(
             'Translations', 'Translations::Helper::Client::details_headers', 'Translations::Helper::Client',
-            (caller(0))[3], $tx->result->message
+            (caller(0))[3], $res->message
         );
-        say $tx->result->message;
+        say $res->message;
+    } else {
+        $body = $res->body;
     }
-    my $result = $res-body->json;
 
-    return $result
+    my $result = decode_json($body);
+    return $result->{result};
 }
 
 sub grid_header ($self, $module, $field_list, $lan) {
@@ -44,26 +47,24 @@ sub grid_header ($self, $module, $field_list, $lan) {
     $post_data->{field_list} = $field_list;
     $post_data->{lan} = $lan;
 
-    my $json = to_json($post_data);
     my $res = $ua->post(
         $self->endpoint_address() . '/grid_header' =>
             {'X-Token-Check' => $self->key()} =>
-            json => $json
+            json => $post_data
     )->result;
 
-    my $result;
+    my $body;
     if($res->is_error){
         $self->capture_message(
             'Translations', 'Translations::Helper::Client::grid_header', 'Translations::Helper::Client',
-            (caller(0))[3], $tx->result->message
+            (caller(0))[3], $res->message
         );
         say $res->message;
     } else {
-        $result = $res-body->json;
+        $body = $res->body;
     }
-
-
-    return $result
+    my $result = decode_json($body);
+    return $result->{result};
 }
 
 sub get_translation_list ($self, $module, $field_list, $lan) {
@@ -81,12 +82,12 @@ sub get_translation_list ($self, $module, $field_list, $lan) {
             json => $json
     )->result;
 
-    if($tx->result->is_error){
+    if($res->is_error){
         $self->capture_message(
             'Translations', 'Translations::Helper::Client::grid_header', 'Translations::Helper::Client',
-            (caller(0))[3], $tx->result->message
+            (caller(0))[3], $res->message
         );
-        say $tx->result->message;
+        say $res->message;
     }
 }
 1;

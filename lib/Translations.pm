@@ -86,8 +86,8 @@ sub startup ($self) {
     # Normal route to controller
     $r->get('/')->to('login#showlogin');
     $r->post('/login')->to('login#login');
-    $r->get('/details_headers')->to('translator#details_headers');
-    $r->get('/grid_header')->to('translator#grid_header');
+    $r->post('/details_headers')->to('translator#details_headers');
+    $r->post('/grid_header')->to('translator#grid_header');
     $auth_route->get('/menu/show')->to('menu#showmenu');
     $auth_route->get('/users/list/')->to('users#list');
     $auth_route->get('/menu/show')->to('menu#showmenu');
