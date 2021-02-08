@@ -453,3 +453,6 @@ create table if not exists menu
 INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Användare', '/app/users/list/', 1);
 
 -- 25 down
+-- 26 Up
+INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Data', '/yancy/', 3);
+-- 26 down

@@ -8,7 +8,7 @@ has 'pg';
 sub login {
 	my ($self, $user, $password) = @_;
 
-	return OrionSync::Model::User->new(pg => $self->pg)->login_light($user, $password);
+	return Translations::Model::User->new(pg => $self->pg)->login_light($user, $password);
 }
 
 sub save {
