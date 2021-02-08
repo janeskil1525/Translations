@@ -11,7 +11,6 @@ sub details_headers ($self) {
 
     my $body = $self->req->body;
     my $json_hash = from_json ($body);
-    say Dumper($json_hash);
     my $module = $json_hash->{module};
     my $field_list = $json_hash->{field_list};
     my $data = $json_hash->{data};
@@ -52,7 +51,6 @@ sub details_headers ($self) {
         }
     }
 
-    #my $result = to_json($details);
     $self->render(json => {result => $details});
 }
 
@@ -99,14 +97,12 @@ sub grid_header ($self) {
         push @header_list, $header;
     }
 
-    #my $result = to_json(\@header_list);
     $self->render(json => {result => \@header_list});
 }
 
 sub get_translation_list ($self, $module, $field_list, $lan) {
 
     my $stmt = $self->get_query($module, $field_list, $lan);
-say $stmt;
     my $translation_list = try{
         $self->app->pg->db->query($stmt)->hashes->to_array
     }catch{
@@ -124,7 +120,6 @@ sub get_query ($self, $module, $field_list, $lan) {
 
     my $incondition ;
 
-    say "get_query " . Dumper($field_list);
     foreach (@{$field_list}){
         $incondition .= " '$_->{setting_value}',";
     }
