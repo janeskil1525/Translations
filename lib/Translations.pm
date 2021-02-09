@@ -88,6 +88,7 @@ sub startup ($self) {
     $r->post('/login')->to('login#login');
     $r->post('/details_headers')->to('translator#details_headers');
     $r->post('/grid_header')->to('translator#grid_header');
+    $r->get('/checkpoint/ping/')->to('checkpoint#ping');
     $auth_route->get('/menu/show')->to('menu#showmenu');
     $auth_route->get('/users/list/')->to('users#list');
     $auth_route->get('/menu/show')->to('menu#showmenu');
