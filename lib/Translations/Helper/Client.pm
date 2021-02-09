@@ -5,7 +5,6 @@ use Mojo::UserAgent;
 use Mojo::JSON qw {to_json decode_json};
 use Data::Dumper;
 
-has 'pg';
 has 'endpoint_address';
 has 'key';
 
