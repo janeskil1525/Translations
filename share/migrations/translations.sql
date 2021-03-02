@@ -456,3 +456,33 @@ INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Användare', '/app/users
 -- 26 Up
 INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Data', '/yancy/', 3);
 -- 26 down
+
+-- 27 up
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_details_fields', 'basketid','Korgid'),
+(6, 'Basket_details_fields', 'approved','Godkännd'),
+(6, 'Basket_details_fields', 'status','Status'),
+(6, 'Basket_details_fields', 'payment','Betalsätt');
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_address_fields', 'address1','Adress 1'),
+(6, 'Basket_address_fields', 'address2','Adress 2'),
+(6, 'Basket_address_fields', 'address3','Adress 3'),
+(6, 'Basket_address_fields', 'city','Postort'),
+(6, 'Basket_address_fields', 'zipcode','Postnummer'),
+(6, 'Basket_address_fields', 'country','Land'),
+(6, 'Basket_address_fields', 'name','Namn');
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Rfqs_grid_fields', 'rfqs_pkey','Primärnyckel'),
+(6, 'Rfqs_grid_fields', 'rfq_no','Nummer'),
+(6, 'Rfqs_grid_fields', 'rfqstatus','Status'),
+(6, 'Rfqs_grid_fields', 'requestdate','Förfrågandatum'),
+(6, 'Rfqs_grid_fields', 'regplate','Reg. No.'),
+(6, 'Rfqs_grid_fields', 'userid','Användare'),
+(6, 'Rfqs_grid_fields', 'company','Företag'),
+(6, 'Rfqs_grid_fields', 'supplier','Leverantör'),
+(6, 'Rfqs_grid_fields', 'sent','Skickad'),
+(6, 'Rfqs_grid_fields', 'sentat','Skickad datum');
+
+-- 27 down
