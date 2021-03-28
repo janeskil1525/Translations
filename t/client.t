@@ -130,6 +130,18 @@ sub grid_header {
     return 1;
 }
 
+sub get_messages {
+
+    my $pg = Mojo::Pg->new->dsn("dbi:Pg:dbname=Translations;host=192.168.1.100;port=15432;user=postgres;password=PV58nova64");
+
+    my $result =  Translations::Helper::Client->new(
+        pg               => $pg,
+        endpoint_address => 'http://127.0.0.1:3022',
+        key              => '2dc7abad-183b-41b9-bdfa-0fa002ad3be6'
+    )->get_messages ('Basket_Text_Messages', 'swe');
+}
+
+ok(get_messages() == 1);
 ok(grid_header() == 1);
 #ok(details_headers() == 1);
 done_testing();

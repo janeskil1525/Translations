@@ -456,3 +456,63 @@ INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Användare', '/app/users
 -- 26 Up
 INSERT INTO menu (menu, menu_path, menu_order) VALUES ('Data', '/yancy/', 3);
 -- 26 down
+
+-- 27 up
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_details_fields', 'basketid','Korgid'),
+(6, 'Basket_details_fields', 'approved','Godkännd'),
+(6, 'Basket_details_fields', 'status','Status'),
+(6, 'Basket_details_fields', 'payment','Betalsätt');
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_address_fields', 'address1','Adress 1'),
+(6, 'Basket_address_fields', 'address2','Adress 2'),
+(6, 'Basket_address_fields', 'address3','Adress 3'),
+(6, 'Basket_address_fields', 'city','Postort'),
+(6, 'Basket_address_fields', 'zipcode','Postnummer'),
+(6, 'Basket_address_fields', 'country','Land'),
+(6, 'Basket_address_fields', 'name','Namn');
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Rfqs_grid_fields', 'rfqs_pkey','Primärnyckel'),
+(6, 'Rfqs_grid_fields', 'rfq_no','Nummer'),
+(6, 'Rfqs_grid_fields', 'rfqstatus','Status'),
+(6, 'Rfqs_grid_fields', 'requestdate','Förfrågandatum'),
+(6, 'Rfqs_grid_fields', 'regplate','Reg. No.'),
+(6, 'Rfqs_grid_fields', 'userid','Användare'),
+(6, 'Rfqs_grid_fields', 'company','Företag'),
+(6, 'Rfqs_grid_fields', 'supplier','Leverantör'),
+(6, 'Rfqs_grid_fields', 'sent','Skickad'),
+(6, 'Rfqs_grid_fields', 'sentat','Skickad datum');
+
+-- 27 down
+
+-- 28 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Messenger_grid_fields', 'message_que_pkey','Primärnyckel'),
+(6, 'Messenger_grid_fields', 'batchid','Batch id'),
+(6, 'Messenger_grid_fields', 'read','Läst'),
+(6, 'Messenger_grid_fields', 'read_date','Läst datum'),
+(6, 'Messenger_grid_fields', 'deleted','Borttagen'),
+(6, 'Messenger_grid_fields', 'payload','Innehåll'),
+(6, 'Messenger_grid_fields', 'system','System'),
+(6, 'Messenger_grid_fields', 'company','Företag'),
+(6, 'Messenger_grid_fields', 'companies_fkey','Företagsnyckel');
+
+-- 28 down
+
+-- 29 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_Text_Messages', 'shoppingcart','Varukorg'),
+(6, 'Basket_Text_Messages', 'checkout','Checkout'),
+(6, 'Basket_Text_Messages', 'price','Pris'),
+(6, 'Basket_Text_Messages', 'freight','Frakt'),
+(6, 'Basket_Text_Messages', 'total','Summa excl. moms'),
+(6, 'Basket_grid_fields', 'stockitem','Artikel'),
+(6, 'Basket_grid_fields', 'description','Beskrivning'),
+(6, 'Basket_grid_fields', 'price','Pris'),
+(6, 'Basket_grid_fields', 'quantity','Antal');
+
+-- 29 down

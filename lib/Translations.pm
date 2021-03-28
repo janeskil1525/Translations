@@ -49,7 +49,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('translations')->from_file(
       $self->dist_dir->child('migrations/translations.sql')
-    )->migrate(26);
+    )->migrate(29);
 
     my $auth_yancy = $self->routes->under( '/yancy', sub {
         my ( $c ) = @_;
@@ -88,7 +88,9 @@ sub startup ($self) {
     $r->post('/login')->to('login#login');
     $r->post('/details_headers')->to('translator#details_headers');
     $r->post('/grid_header')->to('translator#grid_header');
+    $r->post('/get_messages')->to('messages#get_messages');
     $r->get('/checkpoint/ping/')->to('checkpoint#ping');
+
     $auth_route->get('/menu/show')->to('menu#showmenu');
     $auth_route->get('/users/list/')->to('users#list');
     $auth_route->get('/menu/show')->to('menu#showmenu');
