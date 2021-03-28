@@ -2,7 +2,7 @@ package Translations::Helper::Client;
 use Mojo::Base 'Daje::Utils::Sentinelsender', -signatures;
 
 use Mojo::UserAgent;
-use Mojo::JSON qw {to_json decode_json};
+use Mojo::JSON qw {to_json decode_json encode_json};
 use Data::Dumper;
 
 has 'endpoint_address';
@@ -88,6 +88,35 @@ sub get_translation_list ($self, $module, $field_list, $lan) {
         );
         say $res->message;
     }
+}
+
+sub get_messages ($self, $module, $lan) {
+
+    my $ua = Mojo::UserAgent->new();
+    my $post_data;
+    $post_data->{module} = $module;
+    $post_data->{lan} = $lan;
+
+    #my $json = encode_json($post_data);
+    my $res = $ua->post(
+        $self->endpoint_address() . '/get_messages' =>
+            {'X-Token-Check' => $self->key()} =>
+            json => $post_data
+    )->result;
+
+    my $body;
+    if($res->is_error){
+        $self->capture_message(
+            'Translations', 'Translations::Helper::Client::get_messages', 'Translations::Helper::Client',
+            (caller(0))[3], $res->message
+        );
+        say $res->message;
+    } else {
+        $body = $res->body;
+    }
+
+    my $result = decode_json($body);
+    return $result->{result};
 }
 1;
 

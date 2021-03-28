@@ -486,3 +486,33 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'Rfqs_grid_fields', 'sentat','Skickad datum');
 
 -- 27 down
+
+-- 28 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Messenger_grid_fields', 'message_que_pkey','Primärnyckel'),
+(6, 'Messenger_grid_fields', 'batchid','Batch id'),
+(6, 'Messenger_grid_fields', 'read','Läst'),
+(6, 'Messenger_grid_fields', 'read_date','Läst datum'),
+(6, 'Messenger_grid_fields', 'deleted','Borttagen'),
+(6, 'Messenger_grid_fields', 'payload','Innehåll'),
+(6, 'Messenger_grid_fields', 'system','System'),
+(6, 'Messenger_grid_fields', 'company','Företag'),
+(6, 'Messenger_grid_fields', 'companies_fkey','Företagsnyckel');
+
+-- 28 down
+
+-- 29 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_Text_Messages', 'shoppingcart','Varukorg'),
+(6, 'Basket_Text_Messages', 'checkout','Checkout'),
+(6, 'Basket_Text_Messages', 'price','Pris'),
+(6, 'Basket_Text_Messages', 'freight','Frakt'),
+(6, 'Basket_Text_Messages', 'total','Summa excl. moms'),
+(6, 'Basket_grid_fields', 'stockitem','Artikel'),
+(6, 'Basket_grid_fields', 'description','Beskrivning'),
+(6, 'Basket_grid_fields', 'price','Pris'),
+(6, 'Basket_grid_fields', 'quantity','Antal');
+
+-- 29 down
