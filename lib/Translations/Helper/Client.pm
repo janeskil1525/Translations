@@ -67,7 +67,7 @@ sub grid_header ($self, $module, $field_list, $lan) {
     if($body) {
         $result = decode_json($body);
     } else {
-        $result->{result}
+        $result->{result} = '';
     }
 
     return $result->{result};
