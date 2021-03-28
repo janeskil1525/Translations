@@ -69,16 +69,16 @@ sub grid_header ($self, $module, $field_list, $lan) {
 sub get_translation_list ($self, $module, $field_list, $lan) {
 
     my $ua = Mojo::UserAgent->new();
+
     my $post_data;
     $post_data->{module} = $module;
     $post_data->{field_list} = $field_list;
     $post_data->{lan} = $lan;
 
-    my $json = encode_json($post_data);
     my $res = $ua->post(
         $self->endpoint_address() . '/get_translation_list' =>
             {'X-Token-Check' => $self->key()} =>
-            json => $json
+            json => $post_data
     )->result;
 
     if($res->is_error){
