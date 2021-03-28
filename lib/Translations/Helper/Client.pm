@@ -62,7 +62,14 @@ sub grid_header ($self, $module, $field_list, $lan) {
     } else {
         $body = $res->body;
     }
-    my $result = decode_json($body);
+
+    my $result;
+    if($body) {
+        $result = decode_json($body);
+    } else {
+        $result->{result}
+    }
+
     return $result->{result};
 }
 
