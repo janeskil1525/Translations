@@ -2,6 +2,7 @@ lib/Translations.pm
 lib/Translations/Controller/Checkpoint.pm
 lib/Translations/Controller/Login.pm
 lib/Translations/Controller/Menu.pm
+lib/Translations/Controller/Messages.pm
 lib/Translations/Controller/Translator.pm
 lib/Translations/Controller/Users.pm
 lib/Translations/Helper/Client.pm
