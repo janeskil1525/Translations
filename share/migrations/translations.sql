@@ -516,3 +516,20 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'Basket_grid_fields', 'quantity','Antal');
 
 -- 29 down
+
+-- 30 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Basket_Text_Messages', 'purchase','Beställ'),
+(6, 'Basket_Text_Messages', 'deliveryaddress','Leveransadress'),
+(6, 'Basket_Text_Messages', 'name','Namn'),
+(6, 'Basket_Text_Messages', 'address1','Adress'),
+(6, 'Basket_Text_Messages', 'address2','Adress'),
+(6, 'Basket_Text_Messages', 'address3','Adress'),
+(6, 'Basket_Text_Messages', 'city','Post ort'),
+(6, 'Basket_Text_Messages', 'zipcode','Postnummer'),
+(6, 'Basket_Text_Messages', 'country','Land'),
+(6, 'Basket_Text_Messages', 'invoiceaddress','Faktureringsaddress');
+
+
+-- 30 down

@@ -49,7 +49,7 @@ sub startup ($self) {
 
     $self->pg->migrations->name('translations')->from_file(
       $self->dist_dir->child('migrations/translations.sql')
-    )->migrate(29);
+    )->migrate(30);
 
     my $auth_yancy = $self->routes->under( '/yancy', sub {
         my ( $c ) = @_;
