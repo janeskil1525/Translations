@@ -496,11 +496,7 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'Basket_Text_Messages', 'checkout','Checkout'),
 (6, 'Basket_Text_Messages', 'price','Pris'),
 (6, 'Basket_Text_Messages', 'freight','Frakt'),
-(6, 'Basket_Text_Messages', 'total','Summa excl. moms'),
-(6, 'Basket_grid_fields', 'stockitem','Artikel'),
-(6, 'Basket_grid_fields', 'description','Beskrivning'),
-(6, 'Basket_grid_fields', 'price','Pris'),
-(6, 'Basket_grid_fields', 'quantity','Antal');
+(6, 'Basket_Text_Messages', 'total','Summa excl. moms');
 
 -- 29 down
 
