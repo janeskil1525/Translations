@@ -7,7 +7,7 @@ use File::ShareDir::Install qw{install_share};
 install_share  'share';
 
 WriteMakefile(
-	VERSION       => '1.1.4',
+	VERSION       => '1.1.5',
 	NAME          => 'Translations',
 	PREREQ_PM     => {
 		'Mojolicious'                                 => '8.35',
