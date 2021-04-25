@@ -529,7 +529,7 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'Basket_Text_Messages', 'city','Post ort'),
 (6, 'Basket_Text_Messages', 'zipcode','Postnummer'),
 (6, 'Basket_Text_Messages', 'country','Land'),
-(6, 'Basket_Text_Messages', 'invoiceaddress','Faktureringsaddress')
+(6, 'Basket_Text_Messages', 'invoiceaddress','Faktureringsaddress'),
 (6, 'Basket_Text_Messages', 'preeview','Förhandsgranska');
 
 
