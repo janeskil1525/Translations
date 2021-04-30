@@ -517,3 +517,13 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 
 
 -- 30 down
+
+-- 31 up
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'Salesorder_grid_fields', 'order_type','Order typ'),
+(6, 'Salesorder_grid_fields', 'order_no','Order nr.'),
+(6, 'Salesorder_grid_fields', 'orderdate','Order datum'),
+(6, 'Salesorder_grid_fields', 'userid','Referens'),
+(6, 'Salesorder_grid_fields', 'name','Namn');
+
+-- 31 down
