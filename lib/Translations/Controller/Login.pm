@@ -11,11 +11,9 @@ sub showlogin ($self) {
 
 sub login ($self) {
 
-	if($self->users->login($self->param('email'), $self->param('pass'))) {
-		$self->session->{auth} = 1;
-		my $guid = Data::GUID->new;
-		$self->session->{token} = $guid->as_string;
+	if($self->authenticate->login_check($self->param('email'), $self->param('pass'), 'Basket')) {
 
+		$self->session({ auth => 1 });
 		return $self->redirect_to('/app/menu/show');
 	}
 	$self->flash('error' => 'Wrong login/password');

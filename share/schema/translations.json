@@ -65,5 +65,75 @@
         "format" : "textarea"
       }
     }
+  },
+  "mail_templates": {
+    "title": "Mail templates",
+    "description": "Mail templates",
+    "x-id-field": "mail_templates_pkey",
+    "x-list-columns": [
+      "mailtemplate"
+    ],
+    "properties": {
+      "mail_templates_pkey": {
+        "type": "integer",
+        "title": "Template no",
+        "x-order": 1,
+        "readOnly": true
+      },
+      "mailtemplate": {
+        "type": "string",
+        "title": "Template",
+        "x-order": 2
+      }
+    }
+  },
+  "default_mail_templates": {
+    "title": "Default templates",
+    "description": "Default templates på olika språk",
+    "x-id-field": "default_mail_templates_pkey",
+    "x-list-columns": [
+      "default_mail_templates_pkey",
+      "languages_fkey",
+      "mail_templates_fkey",
+      "body_value"
+    ],
+    "properties": {
+      "default_mail_templates_pkey": {
+        "type": "integer",
+        "title": "Template id",
+        "x-order": 1,
+        "readOnly":true
+      },
+      "mail_templates_fkey": {
+        "type": "integer",
+        "title": "Template",
+        "x-order": 2,
+        "x-foreign-key": "mail_templates"
+      },
+      "languages_fkey": {
+        "type": "integer",
+        "title": "Språk",
+        "x-order": 3,
+        "x-foreign-key": "languages"
+      },
+      "header_value": {
+        "type": "string",
+        "title": "Header",
+        "x-order": 4,
+        "format" : "textarea"
+      },
+      "body_value": {
+        "type": "string",
+        "title": "Body",
+        "x-order": 5,
+        "format" : "textarea"
+      },
+      "footer_value": {
+        "type": "string",
+        "title": "Footer",
+        "x-order": 6,
+        "format" : "textarea"
+      }
+    }
   }
 }

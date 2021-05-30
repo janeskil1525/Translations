@@ -125,6 +125,41 @@ sub get_messages ($self, $module, $lan) {
     my $result = decode_json($body);
     return $result->{result};
 }
+
+sub load_template ($self, $template, $lan) {
+
+    my $ua = Mojo::UserAgent->new();
+    my $post_data;
+    $post_data->{template} = $template;
+    $post_data->{lan} = $lan;
+
+    my $res = $ua->post(
+        $self->endpoint_address() . '/api/v1/templates/mail/' =>
+            {'X-Token-Check' => $self->key()} =>
+            json => $post_data
+    )->result;
+
+    my $body;
+    if($res->is_error){
+        $self->capture_message(
+            'Translations', 'Translations::Helper::Client::get_mailtemplate',
+            'Translations::Helper::Client',
+            (caller(0))[3],
+            $res->message
+        );
+        say $res->message;
+    } else {
+        $body = $res->body;
+    }
+
+    if($body) {
+        my $result = decode_json($body);
+        return $result->{result};
+    } else {
+        return '';
+    }
+
+}
 1;
 
 

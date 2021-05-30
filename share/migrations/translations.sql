@@ -527,3 +527,83 @@ INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
 (6, 'Salesorder_grid_fields', 'name','Namn');
 
 -- 31 down
+
+-- 32 up
+
+INSERT INTO translations (languages_fkey, module, tag, translation) VALUES
+(6, 'purchase_order_head', 'purchase_order_head_pkey','Primärnyckel'),
+(6, 'purchase_order_head', 'order_no','Order nummer'),
+(6, 'purchase_order_head', 'orderdate','Order datum'),
+(6, 'purchase_order_head', 'userid','Användare'),
+(6, 'purchase_order_head', 'company','Företag');
+
+-- 32 down
+-- 33 up
+
+CREATE TABLE if not exists mail_templates
+(
+    mail_templates_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mailtemplate VARCHAR NOT NULL UNIQUE,
+    CONSTRAINT mail_templates_pkey PRIMARY KEY (mail_templates_pkey)
+);
+
+CREATE TABLE if not exists default_mail_templates
+(
+    default_mail_templates_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mail_templates_fkey bigint NOT NULL,
+    header_value TEXT NOT NULL DEFAULT '',
+    body_value TEXT NOT NULL DEFAULT '',
+    footer_value TEXT NOT NULL DEFAULT '',
+    languages_fkey integer NOT NULL DEFAULT 0,
+    CONSTRAINT default_mail_templates_pkey PRIMARY KEY (default_mail_templates_pkey),
+    CONSTRAINT default_mail_email_templates_fkey FOREIGN KEY (mail_templates_fkey)
+        REFERENCES mail_templates (mail_templates_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT default_mailer_mails_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+) ;
+
+CREATE TABLE if not exists defined_mail_templates
+(
+    defined_mail_templates_pkey serial NOT NULL,
+    editnum bigint NOT NULL DEFAULT 1,
+    insby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    insdatetime timestamp without time zone NOT NULL DEFAULT now(),
+    modby character varying(25) COLLATE pg_catalog."default" NOT NULL DEFAULT 'System'::character varying,
+    moddatetime timestamp without time zone NOT NULL DEFAULT now(),
+    mail_templates_fkey bigint NOT NULL,
+    header_value TEXT NOT NULL DEFAULT '',
+    body_value TEXT NOT NULL DEFAULT '',
+    footer_value TEXT NOT NULL DEFAULT '',
+    company VARCHAR NOT NULL DEFAULT '',
+    userid VARCHAR NOT NULL DEFAULT '',
+    languages_fkey integer NOT NULL DEFAULT 0,
+    CONSTRAINT defined_mail_templates_pkey PRIMARY KEY (defined_mail_templates_pkey),
+    CONSTRAINT default_mailer_mails_mailer_fkey FOREIGN KEY (mail_templates_fkey)
+        REFERENCES mail_templates (mail_templates_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE,
+    CONSTRAINT defined_mailer_mails_translations_fkey FOREIGN KEY (languages_fkey)
+        REFERENCES languages (languages_pkey) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        DEFERRABLE
+);
+
+-- 33 down

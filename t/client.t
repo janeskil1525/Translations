@@ -141,8 +141,18 @@ sub get_messages {
     )->get_messages ('Basket_Text_Messages', 'swe');
 }
 
-ok(get_messages() == 1);
-ok(grid_header() == 1);
+sub get_mailtemplate {
+
+    my $result =  Translations::Helper::Client->new(
+        endpoint_address => 'http://127.0.0.1:3022',
+        key              => '58e51981-4c5d-46cd-8703-b02c94595a18'
+    )->load_template ('matoritstatistics', 'swe');
+
+    return $result;
+}
+ok(get_mailtemplate() == 1);
+#ok(get_messages() == 1);
+#ok(grid_header() == 1);
 #ok(details_headers() == 1);
 done_testing();
 

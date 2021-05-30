@@ -66,6 +66,7 @@ sub grid_header ($self) {
 
     my @header_list;
     foreach my $field (@{$field_list}){
+
         my $header;
         #my $matching_hash;
         $header->{order} = $field->{setting_order};
@@ -95,6 +96,7 @@ sub grid_header ($self) {
             $header->{headerName} = $field->{setting_value};
         }
         push @header_list, $header;
+
     }
 
     $self->render(json => {result => \@header_list});
