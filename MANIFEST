@@ -1,11 +1,13 @@
 lib/Translations.pm
 lib/Translations/Controller/Checkpoint.pm
 lib/Translations/Controller/Login.pm
+lib/Translations/Controller/Mailtemplates.pm
 lib/Translations/Controller/Menu.pm
 lib/Translations/Controller/Messages.pm
 lib/Translations/Controller/Translator.pm
 lib/Translations/Controller/Users.pm
 lib/Translations/Helper/Client.pm
+lib/Translations/Helper/Mailtemplates.pm
 lib/Translations/Model/Menu.pm
 lib/Translations/Model/User.pm
 lib/Translations/Model/Users.pm
