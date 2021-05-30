@@ -154,7 +154,7 @@ sub load_template ($self, $template, $lan) {
 
     if($body) {
         my $result = decode_json($body);
-        return $result->{result};
+        return $result->{template};
     } else {
         return '';
     }

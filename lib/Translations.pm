@@ -94,19 +94,19 @@ sub startup ($self) {
         return undef;
     } );
 
-    # $self->plugin(
-    #     'Yancy' => {
-    #         route       => $auth_yancy,
-    #         backend     => {Pg => $self->pg},
-    #         schema      => $schema,
-    #         read_schema => 0,
-    #         'editor.return_to'   => '/app/menu/show/',
-    #         'editor.require_user' => undef,
-    #         file => {
-    #
-    #         }
-    #     }
-    # );
+    $self->plugin(
+        'Yancy' => {
+            route       => $auth_yancy,
+            backend     => {Pg => $self->pg},
+            schema      => $schema,
+            read_schema => 0,
+            'editor.return_to'   => '/app/menu/show/',
+            'editor.require_user' => undef,
+            file => {
+
+            }
+        }
+    );
     # Router
     my $r = $self->routes;
 
